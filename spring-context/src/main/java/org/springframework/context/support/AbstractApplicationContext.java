@@ -27,10 +27,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.CachedIntrospectionResults;
 import org.springframework.beans.factory.BeanFactory;
@@ -568,6 +566,35 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
         resetCommonCaches();
       }
     }
+
+    /*	 ============================总结=================
+     1）、Spring容器在启动的时候，先会保存所有注册进来的Bean的定义信息；
+     	1）、xml注册bean；<bean>
+       	2）、注解注册Bean；@Service、@Component、@Bean、xxx
+     2）、Spring容器会合适的时机创建这些Bean
+     	 1）、用到这个bean的时候；利用getBean创建bean；创建好以后保存在容器中；
+     	 2）、统一创建剩下所有的bean的时候；finishBeanFactoryInitialization()；
+     3）、后置处理器；BeanPostProcessor
+     	1）、每一个bean创建完成，都会使用各种后置处理器进行处理；来增强bean的功能；
+     AutowiredAnnotationBeanPostProcessor:处理自动注入
+     AnnotationAwareAspectJAutoProxyCreator:来做AOP功能；
+     xxx....
+     增强的功能注解：
+     AsyncAnnotationBeanPostProcessor
+           ....
+     4）、事件驱动模型；
+     ApplicationListener；事件监听；
+     ApplicationEventMulticaster；事件派发：
+
+     Bean生命周期主要为四个阶段：
+    实例化
+    属性赋值
+    初始化
+    销毁
+
+
+     */
+
   }
 
   /** 准备此上下文以进行刷新，设置其启动日期和活动标志，以及执行属性源的任何初始化。 */
@@ -586,14 +613,14 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
       }
     }
 
-    // 初始化属性，留给子类覆盖实现
+    // 初始化属性，留给子类覆盖实现（子类自定义个性化的属性设置方法）
     initPropertySources();
 
-    // 验证必要属性是否都已经被解析
+    // 验证必要属性是否都已经被解析（校验属性的合法性）
     getEnvironment().validateRequiredProperties();
 
     if (this.earlyApplicationListeners == null) {
-      // 新建一个LinkedHashSet目的为了保存容器中一些事件。
+      // 新建一个LinkedHashSet目的为了保存容器中一些事件。（保存容器中的一些早期的事件）
       this.earlyApplicationListeners = new LinkedHashSet<>(this.applicationListeners);
     } else {
       // 将本地应用程序侦听器重置为预刷新状态。
@@ -609,8 +636,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
    * Replace any stub property sources with actual instances.
    *
    * @see org.springframework.core.env.PropertySource.StubPropertySource
-   * @see
-   *     org.springframework.web.context.support.WebApplicationContextUtils #initServletPropertySources
+   * @see org.springframework.web.context.support.WebApplicationContextUtils
+   *     #initServletPropertySources
    */
   protected void initPropertySources() {
     // For subclasses: do nothing by default.

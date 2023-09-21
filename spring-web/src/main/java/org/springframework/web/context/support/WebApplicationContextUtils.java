@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletConfig;
@@ -29,7 +28,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.env.MutablePropertySources;
@@ -188,7 +186,7 @@ public abstract class WebApplicationContextUtils {
 		if (sc != null) {
 			ServletContextScope appScope = new ServletContextScope(sc);
 			beanFactory.registerScope(WebApplicationContext.SCOPE_APPLICATION, appScope);
-			// Register as ServletContext attribute, for ContextCleanupListener to detect it.
+			// 注册为ServletContext属性，以便contextcleanupllistener检测它。
 			sc.setAttribute(ServletContextScope.class.getName(), appScope);
 		}
 
@@ -397,7 +395,7 @@ public abstract class WebApplicationContextUtils {
 
 
 	/**
-	 * Inner class to avoid hard-coded JSF dependency.
+	 * 内部类，以避免硬编码的JSF依赖。
  	 */
 	private static class FacesDependencyRegistrar {
 
