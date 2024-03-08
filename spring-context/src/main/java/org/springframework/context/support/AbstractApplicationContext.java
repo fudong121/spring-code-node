@@ -1250,13 +1250,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
   public void close() {
     synchronized (this.startupShutdownMonitor) {
       doClose();
-      // If we registered a JVM shutdown hook, we don't need it anymore now:
-      // We've already explicitly closed the context.
+      // 如果我们注册了一个JVM关闭钩子，我们现在就不再需要它了:我们已经显式地关闭了上下文。
       if (this.shutdownHook != null) {
         try {
           Runtime.getRuntime().removeShutdownHook(this.shutdownHook);
         } catch (IllegalStateException ex) {
-          // ignore - VM is already shutting down
+          // 忽略-虚拟机已经关闭
         }
       }
     }
